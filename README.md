@@ -5,11 +5,19 @@ Oculus is the anomaly correlation component of Etsy's Loupe system.
 
 It lets you search for metrics, using your choice of comparison algorithms:
 
-![search results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/search_algo.jpg)
+![search algorithms](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/search_algo.jpg)
 
 and shows you other metrics which are similar:
 
 ![search results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/results_screenshot.jpg)
+
+You can even save interesting metrics into a collection, complete with your own notes:
+
+![save collection](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_save.jpg)
+
+And then if Oculus finds matches in your saved collections, it'll show you this alongside your other search results:
+
+![collection results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_results.jpg)
 
 ## Installation Overview
 
@@ -25,7 +33,7 @@ Where recommended server specs have been mentioned in this document, they're bas
 
 It's recommended that you work through the section in this README in the following order:
 
-- ElasticSearch
+- ElasticSearch                                                                                                                          1
 - Workers
 - Oculus Config File
 - Skyline Import Script and Cronjob
