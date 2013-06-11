@@ -1,0 +1,132 @@
+.container
+  %div{:class => "success_box alert alert-success hide"}
+  %div{:class => "error_box alert alert-error hide"}
+  - if @name_clash
+    %div{:class => "error_box alert alert-error"}
+      %p
+        = "Error: a collection named #{@name_clash} already exists. Please choose another collection name."
+  %h2
+    = @collection
+    = @id
+  %h5
+    - if !@edit_mode
+      %a{:href => "/collection/#{URI.escape(@collection)}?edit=true", "data-toggle" => "modal", :rel => "tooltip", "data-placement" => "right", :title => "Edit Collection"}
+        Edit this Collection
+      |
+    %a{:href => "#delete-confirm_#{@collection.gsub(" ","_")}", "data-toggle" => "modal", :rel => "tooltip", "data-placement" => "right", :title => "Delete Collection"}
+      Delete this Collection
+  %form{:name =>"editcollection", :action => "/editcollection",  :method => "get"}
+    %input{:type => "hidden", :name => "old_collection_name", :value => "#{@collection}"}
+    - if @edit_mode
+      %h3
+        Collection Name:
+        %br
+        %input{:type => "text", :value => "#{@collection}", :name => "collection_name"}
+    %h3
+      Collection Description:
+    - if @edit_mode
+      %p
+        You're allowed to use a variety of HTML markup including formatting tags, links, lists, images and tables. Links are limited to FTP, HTTP, HTTPS, and mailto protocols. Naughty tags will be removed.
+      %textarea{:rows => 10, :name => "collection_description"}
+        - if @collection_description
+          = @collection_description
+        -else
+          = @collection_freetext
+    - else
+      = @collection_freetext
+    - if @edit_mode
+      %button{:class => "btn pull-right", :type => "submit"}
+        Save
+      %a{:class => "btn pull-right", :href => "/collection/#{@collection}"}
+        Cancel
+    %p
+    %br
+    %h3
+      Collection Metrics:
+    - @collection_metrics.each do  |k,v|
+      %a{:href => "javascript: query('#{k}')"}
+        %h4
+          = k
+      - if @edit_mode
+        %h5
+          %a{:href => "#delete-metric-#{k.gsub(".","_")}", "data-toggle" => "modal", :rel => "tooltip", "data-placement" => "right", :title => "Delete Metric"}
+            Delete Metric
+        %div{:class => "modal fade", :id => "delete-metric-#{k.gsub(".","_")}"}
+          %div{:class => "modal-header"}
+            %a{:class => "close", "data-dismiss" => "modal"}
+              ×
+            %h3
+              = "Delete Metric"
+          %div{:class => "modal-body"}
+            %p
+              = "Delete metric <strong>#{k}</strong> from collection <strong>#{@collection}</strong>?<br><br>This removal will be permanent."
+          %div{:class => "modal-footer"}
+            %a{:href => "javascript: deletemetric('#{@collection}','#{k}')", :class => 'btn btn-danger'}
+              Delete
+            %a{:href => "#", "data-dismiss" => "modal", :class => "btn"}
+              Cancel
+      %div{:id => "graph_#{k.gsub(".","_")}"}
+        %script{:type => "text/javascript"}
+          g = new Dygraph(
+          document.getElementById("graph_#{k.gsub(".","_")}"),
+          "Time,Value\n" +
+          =v[:datapoints].each.map{|dp| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
+          ),
+          g.resize(900, 200);
+      %br
+  %div{:class => "modal fade", :id => "delete-confirm_#{@collection.gsub(" ","_")}"}
+    %div{:class => "modal-header"}
+      %a{:class => "close", "data-dismiss" => "modal"}
+        ×
+      %h3
+        = "Delete Collection"
+    %div{:class => "modal-body"}
+      %p
+        = "Delete collection #{@collection.gsub(" ","_")}?"
+    %div{:class => "modal-footer"}
+      %a{:href => "javascript: deletecollection('#{@collection}')", :class => 'btn btn-danger'}
+        Delete
+      %a{:href => "#", "data-dismiss" => "modal", :class => "btn"}
+        Cancel
+:javascript
+  var validator = new FormValidator('editcollection', [{
+      name: 'collection_name',
+      display: 'Collection Name',
+      rules: 'required|callback_alpha_numeric_space'
+  },
+  {
+        name: 'collection_description',
+        display: 'Collection Description',
+        rules: 'required'
+  }],
+  function(errors, evt) {
+     var SELECTOR_ERRORS = $('.error_box');
+
+      if (errors.length > 0) {
+          SELECTOR_ERRORS.empty();
+          SELECTOR_ERRORS.append('<ul>');
+          for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+              SELECTOR_ERRORS.append('<li>' + errors[i].message + '</li>');
+          }
+          SELECTOR_ERRORS.append('</ul>');
+          SELECTOR_ERRORS.fadeIn(200);
+      }
+      else {
+               SELECTOR_ERRORS.css({ display: 'none' });
+               SELECTOR_SUCCESS.fadeIn(200);
+           }
+
+      if (evt && evt.preventDefault) {
+          evt.preventDefault();
+      } else if (event) {
+          event.returnValue = false;
+      }
+  });
+  validator.registerCallback('alpha_numeric_space', function(value) {
+        return (/^[a-z0-9 ]+$/i.test(value));
+    })
+  .setMessage('alpha_numeric_space', 'The %s field must only contain alpha-numeric characters or space.');
+  validator.registerCallback('alpha_numeric_space_url', function(value) {
+          return (/^[a-z0-9 :/?.,()\n\r]+$/i.test(value));
+      })
+    .setMessage('alpha_numeric_space_url', 'The %s field must only contain alpha-numeric characters, space and any of ()/., (ie plain text or a URL)');

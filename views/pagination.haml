@@ -1,0 +1,59 @@
+- if @page_count > 1
+  %div{:class => "pagination pagination-centered"}
+    %ul
+      - if @page.to_i != 1
+        %li
+          %a{:href => "javascript: page('1')",:title => ""}
+            <<
+      - else
+        %li{:class => "disabled"}
+          %a{:href => "#"}
+            <<
+      - if @page.to_i != 1
+        %li
+          %a{:href => "javascript: page('#{@page.to_i - 1}')",:title => ""}
+            <
+      - else
+        %li{:class => "disabled"}
+          %a{:href => "#"}
+            <
+
+      - if @page.to_i < 10
+        - count = @page_count < 10 ? @page_count : 10
+        - for n in 1..count
+          - if @page.to_i == n
+            %li{:class => "disabled"}
+              %a{:href => "javascript: page('#{n}')"}
+                = n
+          - else
+            %li
+              %a{:href => "javascript: page('#{n}')"}
+                = n
+      - else
+        - max = @page.to_i+5 > @page_count.to_i ? @page.to_i : @page.to_i+5
+        - for n in @page.to_i-5..max
+          - if @page.to_i == n
+            %li{:class => "disabled"}
+              %a{:href => "javascript: page('#{n}')"}
+                = n
+          - else
+            %li
+              %a{:href => "javascript: page('#{n}')"}
+                = n
+                
+      - if @page.to_i != @page_count.to_i
+        %li
+          %a{:href => "javascript: page('#{@page.to_i + 1}')",:title => ""}
+            >
+      - else
+        %li{:class => "disabled"}
+          %a{:href => "#"}
+            >
+      - if @page.to_i != @page_count.to_i
+        %li
+          %a{:href => "javascript: page('#{@page_count.to_i}')",:title => ""}
+            >>
+      - else
+        %li{:class => "disabled"}
+          %a{:href => "#"}
+            >>

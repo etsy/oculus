@@ -1,0 +1,74 @@
+.container
+  %h3
+    Save Collection
+  %div{:class => "success_box alert alert-success hide"}
+  %div{:class => "error_box alert alert-error hide"}
+  - if @name_clash
+    %div{:class => "error_box alert alert-error"}
+      %p
+        = "Error: a collection named #{@name_clash} already exists. Please choose another collection name."
+  %form{:id => "savecollection"}
+    Collection Name:
+    %input{:type => "text", :placeholder => "Collection Name", :name => "collection_name"}
+    %br
+    Collection Description:
+    %br
+    %p
+      You're allowed to use a variety of HTML markup including formatting tags, links, lists, images and tables. Links are limited to FTP, HTTP, HTTPS, and mailto protocols. Naughty tags will be removed.
+    %textarea{:rows => 10, :name => "collection_description"}
+      - if @collection_description
+        = @collection_description
+    %button{:class => "btn pull-right", :type => "submit"}
+      Save
+    %a{:class => "btn pull-right", :href => "#{@referer}"}
+      Cancel
+    %h4
+      Metrics:
+    - @metric_data.each do |k,v|
+      %a{:href => "javascript: query('#{v[:id]}')"}
+        %h4
+          = "#{v[:id]}"
+      %p
+      %div{:id => "graph_#{v[:id]}"}
+        %script{:type => "text/javascript"}
+          g = new Dygraph(
+          document.getElementById("graph_#{v[:id]}"),
+          "Time,Value\n" +
+          =v[:datapoints].each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
+          ),
+          g.resize(900, 200);
+      %p
+:javascript
+  var validator = new FormValidator('savecollection', [{
+      name: 'collection_name',
+      display: 'Collection Name',
+      rules: 'required'
+  },
+  {
+        name: 'collection_description',
+        display: 'Collection Description',
+        rules: 'required'
+  }],
+  function(errors, evt) {
+     var SELECTOR_ERRORS = $('.error_box');
+
+      if (errors.length > 0) {
+          SELECTOR_ERRORS.empty();
+          SELECTOR_ERRORS.append('<ul>');
+          for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+              SELECTOR_ERRORS.append('<li>' + errors[i].message + '</li>');
+          }
+          SELECTOR_ERRORS.append('</ul>');
+          SELECTOR_ERRORS.fadeIn(200);
+      }
+      else {
+               SELECTOR_ERRORS.css({ display: 'none' });
+               SELECTOR_SUCCESS.fadeIn(200);
+           }
+
+      if (evt && evt.preventDefault) {
+          evt.preventDefault();
+      } else if (event) {
+          event.returnValue = false;
+      }
+  });

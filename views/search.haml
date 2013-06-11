@@ -1,0 +1,113 @@
+= haml 'sidebox'.to_sym
+.container
+  %ul{:class => "breadcrumb"}
+    %li
+      %a{:href => "/"}
+        Home
+      %span{:class => "divider"}
+        |
+    %li{:class => "active"}
+      Search Results    
+  %p
+    You searched for
+    = "#{@query} (search type: #{@search_type}, phrase slop: #{@phrase_slop}#{@search_type == "fastdtw" ? ", DTW Radius: " << @dtw_radius.to_s : nil})"
+    %div{:class => "accordion", :id => "accordian_graph"}
+      %div{:class => "accordion-group"}
+        %div{:class => "accordion-heading"}
+          %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#accordion_graph", :href => "#collapse_graph"}
+            Graph
+        %div{:id => "collapse_graph", :class => "accordion-body collapse"}
+          %div{:class => "accordion-inner"}
+            %div{:id => "graph_query"}
+              %script{:type => "text/javascript"}
+                g = new Dygraph(
+                document.getElementById("graph_query"),
+                "Time,Value\n" +
+                =@datapoints.each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
+                ),
+                g.resize(900, 200);
+    %div{:class => "accordion", :id => "accordian_fp"}
+      %div{:class => "accordion-group"}
+        %div{:class => "accordion-heading"}
+          %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#accordion_fp", :href => "#collapse_fp"}
+            Fingerprint
+        %div{:id => "collapse_fp", :class => "accordion-body collapse"}
+          %div{:class => "accordion-inner"}
+            = @fingerprint
+
+    %collections
+      - if @collections_results_count == 0
+        = "Your search didn't match any saved collections."
+        %p
+      - else
+        %p
+          = "Your search matched metrics saved in #{@collections_results_count} collections (searched in #{@collections_took}ms):"
+        %p
+          - @collections_results.map{|c|c.collection_name}.uniq.each do |c|
+            %p
+              %a{:href => "/collection/#{c}", :target => "_blank" }
+                = "#{c}"
+                %small
+                  %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-target" => "#collapse_#{c.gsub(" ","_")}"}
+                    (See matching metrics)
+                %div{:id => "collapse_#{c.gsub(" ","_")}", :class => "accordion-body collapse"}
+                  %div{:class => "accordion-inner"}
+                    - @collections_results.select{|m|m.collection_name == c}.each do |collection_member|
+                      %p
+                      = "#{collection_member.metric_name}"
+    %br
+      = "Showing results #{((@page.to_i - 1) * @size) + 1} to #{(@page.to_i * @size)} of #{@results_count}, query took #{@took}ms"
+    
+    = haml 'pagination'.to_sym
+    
+    - @dygraphs.each do |d|
+      %a{:href => "javascript: query('#{d[:id]}')"}
+        %h4
+          = "#{d[:id]}"
+
+      %div{:class => "dropdown"}
+        %h5
+          = "score: #{d[:score]}"
+          |
+          %a{:class => "dropdown-toggle", :role => "button", "data-toggle" => "dropdown", :id => "dropdown_#{d[:id]}", :href => "#"}
+            Add Exclusion Filter
+          %ul{:class => "dropdown-menu", :role => "menu", "aria-labelledby" => "dropdown_#{d[:id]}"}
+            - d[:id].split(".").each do |d|
+              %li
+                %a{:href => "javascript: addfilter('#{d}')"}
+                  = d
+          |
+          %a{:href => "javascript: addtocollection('#{d[:id]}')"}
+            Add To Collection
+          - if @explain == 1 then
+            |
+            %a{:href => "#explainModal_#{d[:id].gsub(".","_")}", "data-toggle" => "modal"}
+              Explain this result
+
+            %div{:id => "explainModal_#{d[:id].gsub(".","_")}", :class => "modal modal.large hide fade", :tabindex => "-1", :role => "dialog", "aria-labelledby" => "explainModalLabel_#{d[:id].gsub(".","_")}", "aria-hidden" => "true"}
+              %div{:class => "modal-header"}
+                %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"}
+                  ×
+                %h4{:id => "explainModalLabel_#{d[:id].gsub(".","_")}"}
+                  = "Explanation for #{d[:id]}"
+              %div{:class => "modal-body"}
+                %pre
+                  = "#{d[:explanation]}"
+              %div{:class => "modal-footer"}
+                %button{:class => "btn", "data-dismiss" => "modal", "aria-hidden" => "true"}
+                  Close
+      
+      %p
+      %div{:id => "graph_#{d[:id]}"}
+        %script{:type => "text/javascript"}
+          g = new Dygraph(
+          document.getElementById("graph_#{d[:id]}"),
+          "Time,Value\n" +
+          =d[:datapoints].each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
+          ),
+          g.resize(900, 200);
+      .graph-label
+        %strong
+          1 Hour
+      %hr
+    = haml 'pagination'.to_sym

@@ -1,0 +1,41 @@
+%div.navbar.navbar-inverse.navbar-fixed-top
+  .navbar-inner
+    .container
+      %a{:class => "btn btn-navbar", "data-toggle" => "collapse", "data-target" => ".nav-collapse"}
+        %span{:class => "icon-bar"}
+        %span{:class => "icon-bar"}
+        %span{:class => "icon-bar"}
+      %a{:class => "brand", :href => "/"}
+        Oculus
+      %div.nav-collapse.collapse
+        %ul{:class => "nav"}
+          %li
+            %a{:href => "/collections"}
+              Collections
+          %li
+            %a{:href => "/status"}
+              Status
+          %li
+            %a{:href => "/help"}
+              Help
+      %form{:class => "navbar-search pull-right", :name => "search", :action => "/search", :method => "get"}
+        %button{:type => "button", :class => "btn-mini btn-inverse", "data-toggle" => "modal", "data-target" => "#searchSettingsModal"}
+          %i{:class => "icon-wrench icon-white"}
+        = haml :search_settings.to_sym
+        %select{:name => "search_type", :class => "btn btn-mini"}
+          - @search_types.each do |s|
+            - if !@search_type.nil? and @search_type == s.downcase
+              %option{:selected => true}
+                =s
+            - elsif @search_type.nil? and s.downcase == "fastdtw"
+              %option{:selected => true}
+                =s
+            - else
+              %option
+                =s
+        %span{:class => "caret"}
+        %input{:type => "text", :class => "search-query input-header-search", :name => "query", :value => "#{@query || nil}", :placeholder => "#{ @query || 'Search'}"}
+        %input{:type => "hidden", :name => "page", :placeholder => "1"}
+        %input{:type => "hidden", :name => "filters", :value => "#{@filters.nil? ? "" : @filters.join(".")}"}
+        %button{:type => "submit", :class => "btn-mini btn-inverse"}
+          %i{:class => "icon-search icon-white"}

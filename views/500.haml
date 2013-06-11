@@ -1,0 +1,32 @@
+.container
+  - if @error.include?("undefined method `fingerprint' for nil:NilClass")
+    %h2
+      Missing Metric!
+    = "Whoops, the metric #{@query} doesn't exist. Please try another!"
+  -elsif @error.include?("Timeout::Error")
+    %h2
+      Timeout!
+    %p
+      = "Whoa, your search took longer than #{@timeout} seconds, which is the timeout configured in config/config.yml."
+    %p
+      You might want to think about tweaking your search settings.
+    %h3
+      Say What?
+    %p
+      = "Well, to keep Oculus nice and performant, if a search takes longer than #{@timeout} seconds to run, it'll stop and let you know. But fear not, intrepid graph explorer, for there are a couple of settings you can tweak to make your search quicker."
+    %p
+      If you click on the little
+      %i{:class => "icon-wrench"}
+      icon next to the search box at the top left, you'll see them.
+    %div{:class => "accordion", :id => "accordian_param_explain"}
+    %div{:class => "accordion-group"}
+      %div{:class => "accordion-heading"}
+        %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#accordion_param_explain", :href => "#collapse_param_explain"}
+          %h3
+            Tell me more!
+      %div{:id => "collapse_param_explain", :class => "accordion-body collapse"}
+        %div{:class => "accordion-inner"}
+          = haml 'help'.to_sym
+  - else
+    #{@error}
+  %p

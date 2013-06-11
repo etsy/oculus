@@ -1,0 +1,13 @@
+%footer
+  .container
+    %br
+    %p
+      Active Search Server:
+      = @active_es_server
+    %p
+    Last import ended at
+    = @last_import_time
+    and took
+    = @last_import_duration
+    seconds
+%script{:src => "/assets/js/bootstrap.min.js"}

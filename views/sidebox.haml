@@ -1,0 +1,17 @@
+%div{:class => "sidebox affix", "data-spy" => "affix", "data-offset-top" => "0"}
+  - if !@filters.empty?
+    %table{:class => "table table-striped"}
+      %thead
+        %tr
+          %th
+            Filtering Out:
+            %a{:href => "javascript: clearfilters()", :rel => "tooltip", "data-placement" => "right", :title => "Clear all Filters"}
+              %i{:class => "icon-remove"}
+      %tbody
+        - @filters.each do |f|
+          %tr
+            %td
+              = f
+              %a{:href => "javascript: removefilter('#{f}')", :rel => "tooltip", "data-placement" => "right", :title => "Remove this Filter"}
+                %i{:class => "icon-remove", :align => "right"}
+  %div{:id => "tempcollection"}

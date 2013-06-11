@@ -1,0 +1,14 @@
+Oculus searches for correlated metrics using a two stage technique. The first stage (which happens regardless of whether you choose Euclidian or FastDTW in the search type box) treats each metric as a phrase (basically, a list of words), and searches for other matching metrics based on the number of words in each phrase which are out of order.
+%p
+  %br
+  This first pass gives us a set of very roughly similar metrics. This set is then refined using either Euclidian Distance or Fast Dynamic Time Warping, depending on which option you chose from the drop down beside the search box. Both of these algorithms (FastDTW especially) are quite computationally expensive. You can speed things up by reducing the number of metrics that get through to the second stage, and in the case of FastDTW by changing it's "radius" parameter.
+%a{:name => "phrase_slop"}
+%h4
+  Phrase Slop
+%p
+  Unless you know what you're doing, this is the best parameter to tweak. The lower this number is, the closer each candidate metric will have to match the one you're searching for. This lowers the number of candidate metrics that get through to the second stage. Try decrementing this value by 5 or so, until you stop seeing timeouts and start seeing lovely correlated graphs!
+%a{:name => "dtw_radius"}
+%h4
+  FastDTW Only - DTW Radius
+%p
+  The short version is that the smaller this parameter is, the faster FastDTW will calculate results. The more complex version is that this parameter increases the execution time of FastDTW linearly, and controls the distance from the linear warp path the algorithm will scan.

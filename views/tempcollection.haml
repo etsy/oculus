@@ -1,0 +1,18 @@
+- unless @temp_collection.nil? or @temp_collection.empty?
+  %table{:class => "table table-striped"}
+    %thead
+      %tr
+        %th
+          New Collection:
+          %a{:href => "javascript: clearcollection()", :rel => "tooltip", "data-placement" => "right", :title => "Clear Collection"}
+            %i{:class => "icon-remove"}
+    %tbody
+      - @temp_collection.each do |t|
+        %tr
+          %td
+            %a{:href => "#", :rel => "tooltip", :title => "#{t}"}
+              = "#{t[0..25]}..."
+            %a{:href => "javascript: removefromcollection('#{t}')", :rel => "tooltip", "data-placement" => "right", :title => "Remove From Collection"}
+              %i{:class => "icon-remove"}
+  %a{:class => "btn pull-right", :href => "/savecollection"}
+    Save

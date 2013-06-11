@@ -1,0 +1,6 @@
+%html
+  = haml 'shared/page_header'.to_sym
+  %body
+    = haml 'shared/header'.to_sym
+    = yield
+    = haml 'shared/footer'.to_sym

@@ -1,0 +1,24 @@
+.container
+
+  %ul{:class => "breadcrumb"}
+    %li
+      %a{:href => "/"}
+        Home
+      %span{:class => "divider"}
+        |
+    %li{:class => "active"}
+      Status    
+
+  %br
+    %table{:class => "table"}
+      %tr
+        %th
+          Helper
+        %th
+          Status	
+        - @helper_status.each_key do |n|
+          %tr
+            %td
+              #{n}
+            %td
+              #{@helper_status[n]}

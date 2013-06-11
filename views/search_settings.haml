@@ -1,0 +1,21 @@
+%div{ :id => "searchSettingsModal", :class => "modal hide fade"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal", "aria-hidden" => "true"}
+      x
+    %h3
+      Search Options
+  %div{:class => "modal-body custom-modal-body"}
+    %label
+      Phrase Slop
+      %a{:href => "/help#phrase_slop", :target => "_blank"}
+        %i{:class => "icon-question-sign"}
+    %input{:type => "text", :name => "p_slop", :value => "#{@phrase_slop}", :placeholder => ""}
+    %label{:name => "dtw_radius_label"}
+      DTW Radius
+      %a{:href => "/help#dtw_radius", :target => "_blank"}
+        %i{:class => "icon-question-sign", :name => "dtw_radius_icon"}
+    %input{:type => "text", :name => "dtw_radius", :value => "#{@dtw_radius}", :placeholder => ""}
+  %div{:class => "modal-footer"}
+    %a{:class => "btn", "data-dismiss" => "modal", "aria-hidden" => "true"}
+      Close
+%script

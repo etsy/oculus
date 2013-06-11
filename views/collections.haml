@@ -1,0 +1,33 @@
+.container
+  %h2
+    Collections
+  %p
+  %table{:class => "table table-striped"}
+    %tbody
+    - @collections.map{|c|c.collection_name}.uniq.sort.each do |c|
+      %tr
+        %td
+          %a{:href => "/collection/#{c}"}
+            = c
+        %td
+          = @collections.select{|coll| coll.collection_name ==c}.length
+          = " metrics"
+        %td
+          = @freetexts[c]
+        %td
+          %a{:href => "#delete-confirm_#{c.gsub(" ","_")}", "data-toggle" => "modal", :rel => "tooltip", "data-placement" => "right", :title => "Delete Collection"}
+            %i{:class => "icon-remove"}
+      %div{:class => "modal fade", :id => "delete-confirm_#{c.gsub(" ","_")}"}
+        %div{:class => "modal-header"}
+          %a{:class => "close", "data-dismiss" => "modal"}
+            ×
+          %h3
+            = "Delete Collection"
+        %div{:class => "modal-body"}
+          %p
+            = "Delete collection #{c}?"
+        %div{:class => "modal-footer"}
+          %a{:href => "javascript: deletecollection('#{c}')", :class => 'btn btn-danger'}
+            Delete
+          %a{:href => "#", "data-dismiss" => "modal", :class => "btn"}
+            Cancel

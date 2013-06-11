@@ -1,0 +1,73 @@
+body { 
+  padding-top: 60px;
+}
+.input-append button.add-on {
+    height: inherit !important;
+}
+.input-header-search { width: 400px }
+
+select.btn-mini {
+    height: auto;
+    width: 100px;
+    line-height: 14px;
+}
+
+/* this is optional (see below) */
+select.btn {
+    -webkit-appearance: button;
+       -moz-appearance: button;
+            appearance: button;
+    padding-right: 16px;
+}
+
+select.btn-mini + .caret {
+    margin-left: -20px;
+    margin-top: 9px;
+    margin-right: 15px;
+}
+
+ul.nav li p{
+    font-size: 12px;
+    padding: 10px 0px 11px 10px;
+}
+
+*[id*='explainModal_'] {
+	width: 900px; /* SET THE WIDTH OF THE MODAL */
+	margin: 0 0 0 -450px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+}
+
+footer{
+    display: table;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Supergraph */
+
+.name {
+    display: inline;
+}
+.count {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline;
+}
+
+.metric_container {
+    display: inline-block;
+    position: relative;
+    float: left;
+}
+
+.modal-backdrop {z-index: 1029;}
+
+textarea {
+    width:100%;
+}
+
+.graph-label {
+    position: absolute;
+    margin:auto;
+    margin-left:450px;
+}
