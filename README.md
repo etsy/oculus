@@ -5,19 +5,19 @@ Oculus is the anomaly correlation component of Etsy's Loupe system.
 
 It lets you search for metrics, using your choice of comparison algorithms:
 
-![search algorithms](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/search_algo.jpg)
+![search algorithms](https://raw.github.com/etsy/oculus/master/public/assets/img/screenshots/search_algo.jpeg)
 
 and shows you other metrics which are similar:
 
-![search results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/results_screenshot.jpg)
+![search results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/results_screenshot.jpeg)
 
 You can even save interesting metrics into a collection, complete with your own notes:
 
-![save collection](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_save.jpg)
+![save collection](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_save.jpeg)
 
 And then if Oculus finds matches in your saved collections, it'll show you this alongside your other search results:
 
-![collection results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_results.jpg)
+![collection results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_results.jpeg)
 
 ## Installation Overview
 
