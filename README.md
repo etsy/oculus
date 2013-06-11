@@ -1,7 +1,19 @@
 Oculus
 ===========
 
-Oculus is the anomaly correlation component of Etsy's Loupe system. It consists of the following components:
+Oculus is the anomaly correlation component of Etsy's Loupe system.
+
+It lets you search for metrics, using your choice of comparison algorithms:
+
+![search results](/public/assets/img/screenshots/search_algo.jpg)
+
+and shows you other metrics which are similar:
+
+![search results](/public/assets/img/screenshots/results_screenshot.jpg)
+
+## Installation Overview
+
+Oculus consists of the following components:
 
 - Sinatra Web App - the Oculus front end, used to search for metric correlations
 - Skyline Import Script and Cronjob  - Used to import data from Skyline into Elasticsearch
