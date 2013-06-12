@@ -1,7 +1,7 @@
 Oculus
 ===========
 
-Oculus is the anomaly correlation component of Etsy's Loupe system.
+Oculus is the anomaly correlation component of Etsy's Kale system.
 
 It lets you search for metrics, using your choice of comparison algorithms:
 
