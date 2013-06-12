@@ -67,7 +67,7 @@ For Oculus to function properly, you will ideally need at least two ElasticSearc
     rake build
     ```
 - If successful, this will create a file called ```OculusPlugins.jar```
-- copy ```OculusPlugins.jar``` to ```/opt/elasticsearch//lib/OculusPlugins.jar```
+- copy ```OculusPlugins.jar``` to ```/opt/elasticsearch/lib/OculusPlugins.jar```
 
 ###Configuration
 
