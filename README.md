@@ -9,15 +9,15 @@ It lets you search for metrics, using your choice of comparison algorithms:
 
 and shows you other metrics which are similar:
 
-![search results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/results_screenshot.jpeg)
+![search results](https://raw.github.com/etsy/oculus/master/public/assets/img/screenshots/results_screenshot.jpeg)
 
 You can even save interesting metrics into a collection, complete with your own notes:
 
-![save collection](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_save.jpeg)
+![save collection](https://raw.github.com/etsy/oculus/master/public/assets/img/screenshots/collection_save.jpeg)
 
 And then if Oculus finds matches in your saved collections, it'll show you this alongside your other search results:
 
-![collection results](https://github.com/etsy/oculus/raw/master/public/assets/img/screenshots/collection_results.jpeg)
+![collection results](https://raw.github.com/etsy/oculus/master/public/assets/img/screenshots/collection_results.jpeg)
 
 ## Installation Overview
 
