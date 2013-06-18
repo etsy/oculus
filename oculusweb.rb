@@ -19,9 +19,9 @@ class Oculusweb < Sinatra::Base
 
    # Comment out the following 3 lines if you want more verbose logging
    # like stacktraces and the dev mode sinatra error page
-   set :show_exceptions, false
-   set :logging, false
-   set :dump_errors, false
+   #set :show_exceptions, false
+   #set :logging, false
+   #set :dump_errors, false
 
    register Sinatra::ConfigFile
    config_file './config/config.yml'
@@ -297,7 +297,7 @@ class Oculusweb < Sinatra::Base
     @elasticsearch_helper.dtw_radius=@dtw_radius
     @size = 20
     @explain = settings.results_explain.to_i
-    if params[:draw_values] != ""
+    if params[:draw_values] != "" and !params[:draw_values].nil?
       @query = "Drawn Query"
       @formatted_query = "Drawn Query"
       raw_values = params[:draw_values].split(",").map{|v|v.to_f}
