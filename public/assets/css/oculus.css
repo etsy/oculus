@@ -65,9 +65,3 @@ footer{
 textarea {
     width:100%;
 }
-
-.graph-label {
-    position: absolute;
-    margin:auto;
-    margin-left:450px;
-}

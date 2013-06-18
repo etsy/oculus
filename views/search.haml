@@ -11,21 +11,22 @@
   %p
     You searched for
     = "#{@query} (search type: #{@search_type}, phrase slop: #{@phrase_slop}#{@search_type == "fastdtw" ? ", DTW Radius: " << @dtw_radius.to_s : nil})"
-    %div{:class => "accordion", :id => "accordian_graph"}
-      %div{:class => "accordion-group"}
-        %div{:class => "accordion-heading"}
-          %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#accordion_graph", :href => "#collapse_graph"}
-            Graph
-        %div{:id => "collapse_graph", :class => "accordion-body collapse"}
-          %div{:class => "accordion-inner"}
-            %div{:id => "graph_query"}
-              %script{:type => "text/javascript"}
-                g = new Dygraph(
-                document.getElementById("graph_query"),
-                "Time,Value\n" +
-                =@datapoints.each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
-                ),
-                g.resize(900, 200);
+    - unless @datapoints.nil?
+      %div{:class => "accordion", :id => "accordian_graph"}
+        %div{:class => "accordion-group"}
+          %div{:class => "accordion-heading"}
+            %a{:class => "accordion-toggle", "data-toggle" => "collapse", "data-parent" => "#accordion_graph", :href => "#collapse_graph"}
+              Graph
+          %div{:id => "collapse_graph", :class => "accordion-body collapse"}
+            %div{:class => "accordion-inner"}
+              %div{:id => "graph_query"}
+                %script{:type => "text/javascript"}
+                  g = new Dygraph(
+                  document.getElementById("graph_query"),
+                  "Time,Value\n" +
+                  =@datapoints.each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
+                  ),
+                  g.resize(900, 200);
     %div{:class => "accordion", :id => "accordian_fp"}
       %div{:class => "accordion-group"}
         %div{:class => "accordion-heading"}
@@ -106,8 +107,4 @@
           =d[:datapoints].each_with_index.map{|dp,i| "\"#{dp[0]},#{dp[1]}\\n\""}.join(" +")
           ),
           g.resize(900, 200);
-      .graph-label
-        %strong
-          1 Hour
-      %hr
     = haml 'pagination'.to_sym

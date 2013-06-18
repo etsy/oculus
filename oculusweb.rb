@@ -288,8 +288,6 @@ class Oculusweb < Sinatra::Base
 
   get '/search' do
     @temp_collection = session[:tempcollection]
-    @query = params["query"]
-    @formatted_query = "#{@metric_prefix}.#{@query}"
     @search_type = params["search_type"].downcase || "FastDTW"
     @page = params["page"] == "" ? 1 : params["page"]
     @filters = params["filters"].nil? ? [] : params["filters"].split(".")
@@ -299,8 +297,18 @@ class Oculusweb < Sinatra::Base
     @elasticsearch_helper.dtw_radius=@dtw_radius
     @size = 20
     @explain = settings.results_explain.to_i
-    @fingerprint = @elasticsearch_helper.get_fingerprint(@formatted_query)
-    @values = @elasticsearch_helper.get_values(@formatted_query)
+    if params[:draw_values] != ""
+      @query = "Drawn Query"
+      @formatted_query = "Drawn Query"
+      raw_values = params[:draw_values].split(",").map{|v|v.to_f}
+      @fingerprint = @fingerprint_helper.translate_metric_array(raw_values)
+      @values = raw_values.join(" ")
+    else
+      @query = params["query"]
+      @formatted_query = "#{@metric_prefix}.#{@query}"
+      @fingerprint = @elasticsearch_helper.get_fingerprint(@formatted_query)
+      @values = @elasticsearch_helper.get_values(@formatted_query)
+    end
     data_fields = {"name" => @formatted_query, "fingerprint" => @fingerprint, "values" => @values}
 
     #Search collections
@@ -312,7 +320,11 @@ class Oculusweb < Sinatra::Base
     results = @elasticsearch_helper.search("#{@search_type}",data_fields,@filters,{:from => (@page.to_i-1) * @size, :size => @size, :explain => @explain})
 
     redis_results = Hash.new
-    redis_names = results.map{|r|r.id} << @formatted_query
+    if @formatted_query == "Drawn Query"
+      redis_names = results.map{|r|r.id}
+    else
+      redis_names = results.map{|r|r.id} << @formatted_query
+    end
     redis_datapoints = @skyline_helper.mget(redis_names)
     redis_names.each_with_index do |r,index|
       redis_results[r] = []
@@ -322,7 +334,12 @@ class Oculusweb < Sinatra::Base
         redis_results[r] <<  obj
       end
     end
-    @datapoints = @dygraph_helper.redis_datapoints_to_dygraph_format(redis_results[@formatted_query])
+
+    if params[:draw_values] == ""
+      @datapoints = @dygraph_helper.redis_datapoints_to_dygraph_format(redis_results[@formatted_query])
+    else
+      @datapoints = nil
+    end
 
 
     @results_count = results.total_entries
