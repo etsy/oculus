@@ -15,6 +15,9 @@ require File.join(File.dirname(__FILE__), 'helpers/fingerprint')
 
 $sockets = []
 
+class HelperError < StandardError
+end
+
 class Oculusweb < Sinatra::Base
 
    # Comment out the following 3 lines if you want more verbose logging
