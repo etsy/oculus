@@ -1,6 +1,7 @@
 package com.etsy.oculus.tsscorers;
 
 import org.elasticsearch.common.Nullable;
+import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.script.ExecutableScript;
 import org.elasticsearch.script.NativeScriptFactory;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
@@ -25,7 +26,7 @@ public class EuclidianScript extends AbstractDoubleSearchScript {
     @Override public double runAsDouble(){
       
       try{ 
-          String current_value = doc().field(comparison_field).stringValue();
+          String current_value = ((ScriptDocValues.Strings)doc().get(comparison_field)).getValues().get(0);
       
           String[] strQueryArray = new String[0]; 
           strQueryArray = query.split(" ");
