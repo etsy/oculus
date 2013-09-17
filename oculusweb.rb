@@ -321,20 +321,21 @@ class Oculusweb < Sinatra::Base
 
     #Search metrics
     results = @elasticsearch_helper.search("#{@search_type}",data_fields,@filters,{:from => (@page.to_i-1) * @size, :size => @size, :explain => @explain})
-
     redis_results = Hash.new
     if @formatted_query == "Drawn Query"
       redis_names = results.map{|r|r.id}
     else
       redis_names = results.map{|r|r.id} << @formatted_query
     end
-    redis_datapoints = @skyline_helper.mget(redis_names)
-    redis_names.each_with_index do |r,index|
-      redis_results[r] = []
-      u = MessagePack::Unpacker.new
-      u.feed(redis_datapoints[index])
-      u.each do |obj|
-        redis_results[r] <<  obj
+    unless redis_names.empty?
+      redis_datapoints = @skyline_helper.mget(redis_names)
+      redis_names.each_with_index do |r,index|
+        redis_results[r] = []
+        u = MessagePack::Unpacker.new
+        u.feed(redis_datapoints[index])
+        u.each do |obj|
+          redis_results[r] <<  obj
+        end
       end
     end
 
