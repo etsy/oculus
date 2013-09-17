@@ -20,7 +20,7 @@ if config[:elasticsearch][:servers].length == 0
   puts "ERROR: You need at least 1 ElasticSearch server in your config. Found 0."
   exit 1
 elsif config[:elasticsearch][:servers].length == 1
-  search_server = config[:elasticsearch][:servers].select{|m| m != current_es_server}.sample
+  search_server = config[:elasticsearch][:servers].first
 else
   search_server = config[:elasticsearch][:servers].select{|m| m != current_es_server}.sample
 end
@@ -34,6 +34,7 @@ puts "Next ES Server: #{search_server}"
 #Recreate indexes
 puts "Recreating indexes"
 
+puts "#{search_server}: #{search_index}"
 @elasticsearch_helper = Oculus::Helpers::ElasticsearchHelper.new(search_server,search_index,"metric",15)
 @elasticsearch_helper.recreate_index
 @elasticsearch_helper.update_mapping
