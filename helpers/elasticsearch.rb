@@ -196,7 +196,8 @@ module Oculus
                                             "untouched" => {
                                               "type" => "string",
                                               "index" => "not_analyzed",
-                                              "include_in_all" => false
+                                              "include_in_all" => false,
+                                              "store" => true
                                             }
                                           }
                                         }
