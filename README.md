@@ -57,7 +57,7 @@ For Oculus to function properly, you will ideally need at least two ElasticSearc
 ###Installation and Plugin Build (Applies to all cluster nodes)
 - Install the Java JDK (on CentOS, this is ```yum install jdk```)
 - Download and extract elasticsearch from ```http://www.elasticsearch.org/download/``` - here we'll assume /opt/elasticsearch
-    - Oculus has been tested with version 0.20.5  - it will currently not build on version 0.90 and above
+    - Oculus has been tested with version 0.90  - it should currently not build on version 0.90 and above
 - Clone the Oculus repository to somewhere on your server - here we'll assume /opt/oculus
 - Run the command ```mkdir elasticsearch-oculus-plugin```
 - Copy ```/opt/oculus/resources/elasticsearch-oculus-plugin``` to ```/opt/elasticsearch/elasticsearch-oculus-plugin```
