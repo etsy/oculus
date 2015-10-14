@@ -1,3 +1,8 @@
+Oculus is an Archived Project
+=============================
+
+Oculus is no longer actively maintained. Your mileage with patches may vary.
+
 Oculus
 ===========
 
